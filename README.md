@@ -1,2 +1,2 @@
-# Ali-s-Game-of-Life
+# Alis-Game-of-Life
  A re-creation of Conway's Game of Life: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
