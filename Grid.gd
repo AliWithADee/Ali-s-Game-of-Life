@@ -64,24 +64,16 @@ func next_generation():
 	var changed_cells = []
 	
 	var bounds = get_bounds()
-	for y in range(bounds["min_y"]-1, bounds["max_y"]+2):
-		for x in range(bounds["min_x"]-1, bounds["max_x"]+2):
+	for x in range(bounds["min_x"]-1, bounds["max_x"]+2):
+		for y in range(bounds["min_y"]-1, bounds["max_y"]+2):
 			var cell = get_cell(x, y)
 			
-			var neighbours = []
-			neighbours.append(Vector2(x+1, y))
-			neighbours.append(Vector2(x, y+1))
-			neighbours.append(Vector2(x+1, y+1))
-			neighbours.append(Vector2(x-1, y))
-			neighbours.append(Vector2(x, y-1))
-			neighbours.append(Vector2(x-1, y-1))
-			neighbours.append(Vector2(x-1, y+1))
-			neighbours.append(Vector2(x+1, y-1))
-			
 			var alive_neighbours = 0
-			for neighbour in neighbours:
-				if get_cell(neighbour.x, neighbour.y) == ALIVE:
-					alive_neighbours += 1
+			for x_off in [-1, 0, 1]:
+				for y_off in [-1, 0, 1]:
+					if x_off != y_off or x_off != 0:
+						if get_cell(x + x_off, y + y_off) == ALIVE:
+							alive_neighbours += 1
 			
 			if cell == ALIVE:
 				if alive_neighbours < 2 or alive_neighbours > 3:
@@ -89,14 +81,14 @@ func next_generation():
 			elif cell == DEAD:
 				if alive_neighbours == 3:
 					changed_cells.append({"pos_x": x, "pos_y": y, "new_value": ALIVE})
-	
+					
 	for changed_cell in changed_cells:
 		set_cell(changed_cell["pos_x"], changed_cell["pos_y"], changed_cell["new_value"])
 
 func clear():
 	var bounds = get_bounds()
-	for y in range(bounds["min_y"]-1, bounds["max_y"]+2):
-		for x in range(bounds["min_x"]-1, bounds["max_x"]+2):
+	for x in range(bounds["min_x"]-1, bounds["max_x"]+2):
+		for y in range(bounds["min_y"]-1, bounds["max_y"]+2):
 			set_cell(x, y, DEAD)
 	
 func _on_ButtonSim_pressed():
